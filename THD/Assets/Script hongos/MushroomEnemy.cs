@@ -22,4 +22,4 @@ public class MushroomEnemy : MonoBehaviour
             transform.position += fleeDirection * speed * Time.deltaTime;
         }
     }
-}
+} 

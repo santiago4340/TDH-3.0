@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hongo
+  - Tomate
   layers:
   - Default
   - TransparentFX
