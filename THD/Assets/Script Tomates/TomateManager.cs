@@ -1,27 +1,45 @@
-using UnityEngine;
-using TMPro; // Necesario para usar TextMeshPro
+Ôªøusing UnityEngine;
+using TMPro;
 
 public class TomateManager : MonoBehaviour
 {
     public TextMeshProUGUI tomatoCounterText; // Referencia al texto de la UI
     private int tomatoCount = 0; // Contador de tomates atrapados
 
-    // MÈtodo que se llama al iniciar el juego
     void Start()
     {
         UpdateTomatoCounter(); // Actualiza el texto inicial
     }
 
-    // MÈtodo para contar un tomate atrapado
     public void CollectTomato()
     {
         tomatoCount++; // Aumenta el contador
         UpdateTomatoCounter(); // Actualiza el texto en la UI
+
+        // Actualiza la UI de pociones despu√©s de recolectar
+        FindObjectOfType<PotionCraftingManager>().UpdatePotionUI();
     }
 
-    // MÈtodo para actualizar el texto del contador
     private void UpdateTomatoCounter()
     {
         tomatoCounterText.text = "Tomates: " + tomatoCount; // Actualiza el texto
+    }
+
+    public int GetTomatoCount()
+    {
+        return tomatoCount;
+    }
+
+    public void UseTomatoes(int amount)
+    {
+        if (tomatoCount >= amount)
+        {
+            tomatoCount -= amount;
+            UpdateTomatoCounter();
+        }
+        else
+        {
+            Debug.Log("No tienes suficientes tomates.");
+        }
     }
 }
