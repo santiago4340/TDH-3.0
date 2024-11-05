@@ -34,8 +34,8 @@ public class TomateManager : MonoBehaviour
     {
         if (tomatoCount >= amount)
         {
-            tomatoCount -= amount;
-            UpdateTomatoCounter();
+            tomatoCount -= amount; // Disminuye la cantidad de tomates
+            UpdateTomatoCounter(); // Actualiza el texto
         }
         else
         {

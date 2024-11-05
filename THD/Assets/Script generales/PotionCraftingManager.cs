@@ -1,17 +1,21 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class PotionCraftingManager : MonoBehaviour
 {
-    public HongoManager hongoManager;
-    public TomateManager tomateManager;
+    public HongoManager hongoManager; // Referencia al gestor de hongos
+    public TomateManager tomateManager; // Referencia al gestor de tomates
 
-    public TextMeshProUGUI mushroomPotionText;
-    public TextMeshProUGUI mixedPotionText;
+    public TextMeshProUGUI mushroomPotionText; // Texto para la pociÃ³n de hongos
+    public TextMeshProUGUI mixedPotionText; // Texto para la pociÃ³n mixta
+        
+    public Button mushroomPotionButton; // BotÃ³n para crear pociÃ³n de hongos
+    public Button mixedPotionButton; // BotÃ³n para crear pociÃ³n mixta
 
-    public Button mushroomPotionButton;
-    public Button mixedPotionButton;
+    // Inventario de pociones
+    private int mushroomPotionCount = 0; // Contador de pociones de hongos
+    private int mixedPotionCount = 0; // Contador de pociones mixtas
 
     void Start()
     {
@@ -23,51 +27,84 @@ public class PotionCraftingManager : MonoBehaviour
         UpdatePotionUI();
     }
 
-    // Método para actualizar los textos y estados de los botones
+    // MÃ©todo para actualizar los textos y estados de los botones
     public void UpdatePotionUI()
     {
         int currentMushrooms = hongoManager.GetMushroomCount();
         int currentTomatoes = tomateManager.GetTomatoCount();
 
-        // Actualizar texto para la Poción de Hongos
-        mushroomPotionText.text = $"Poción de Hongos: {currentMushrooms}/2 hongos";
+        // Actualizar texto para la PociÃ³n de Hongos
+        mushroomPotionText.text = $"PociÃ³n de Hongos: {currentMushrooms}/2 hongos (Tienes: {mushroomPotionCount})";
         mushroomPotionButton.interactable = currentMushrooms >= 2;
 
-        // Actualizar texto para la Poción de Hongo y Tomate
-        mixedPotionText.text = $"Poción de Hongo y Tomate: {currentMushrooms}/2 hongos, {currentTomatoes}/1 tomate";
+        // Actualizar texto para la PociÃ³n de Hongo y Tomate
+        mixedPotionText.text = $"PociÃ³n de Hongo y Tomate: {currentMushrooms}/2 hongos, {currentTomatoes}/1 tomate (Tienes: {mixedPotionCount})";
         mixedPotionButton.interactable = currentMushrooms >= 2 && currentTomatoes >= 1;
     }
 
-    // Método para crear una Poción de Hongos
+    // MÃ©todo para crear una PociÃ³n de Hongos
     public void CreateMushroomPotion()
     {
         if (hongoManager.GetMushroomCount() >= 2)
         {
             hongoManager.UseMushrooms(2);
-            Debug.Log("¡Poción de Hongos creada!");
-            // Aquí puedes añadir lógica adicional para otorgar la poción al jugador
+            mushroomPotionCount++; // Incrementar el conteo de pociones de hongos
+            Debug.Log("Â¡PociÃ³n de Hongos creada!");
             UpdatePotionUI();
+            // TambiÃ©n actualiza la tienda para reflejar los cambios
+            FindObjectOfType<StoreManager>().UpdateStoreUI();
         }
         else
         {
-            Debug.Log("No tienes suficientes hongos para crear una Poción de Hongos.");
+            Debug.Log("No tienes suficientes hongos para crear una PociÃ³n de Hongos.");
         }
     }
 
-    // Método para crear una Poción de Hongo y Tomate
+    // MÃ©todo para crear una PociÃ³n de Hongo y Tomate
     public void CreateMixedPotion()
     {
         if (hongoManager.GetMushroomCount() >= 2 && tomateManager.GetTomatoCount() >= 1)
         {
             hongoManager.UseMushrooms(2);
             tomateManager.UseTomatoes(1);
-            Debug.Log("¡Poción de Hongo y Tomate creada!");
-            // Aquí puedes añadir lógica adicional para otorgar la poción al jugador
+            mixedPotionCount++; // Incrementar el conteo de pociones mixtas
+            Debug.Log("Â¡PociÃ³n de Hongo y Tomate creada!");
             UpdatePotionUI();
+            // TambiÃ©n actualiza la tienda para reflejar los cambios
+            FindObjectOfType<StoreManager>().UpdateStoreUI();
         }
         else
         {
-            Debug.Log("No tienes suficientes ingredientes para crear una Poción de Hongo y Tomate.");
+            Debug.Log("No tienes suficientes ingredientes para crear una PociÃ³n de Hongo y Tomate.");
+        }
+    }
+
+    // MÃ©todos para obtener la cantidad de pociones
+    public int GetMushroomPotionCount()
+    {
+        return mushroomPotionCount;
+    }
+
+    public int GetMixedPotionCount()
+    {
+        return mixedPotionCount;
+    }
+
+    // MÃ©todo para disminuir el conteo de pociones de hongos
+    public void DecreaseMushroomPotionCount()
+    {
+        if (mushroomPotionCount > 0)
+        {
+            mushroomPotionCount--;
+        }
+    }
+
+    // MÃ©todo para disminuir el conteo de pociones mixtas
+    public void DecreaseMixedPotionCount()
+    {
+        if (mixedPotionCount > 0)
+        {
+            mixedPotionCount--;
         }
     }
 }

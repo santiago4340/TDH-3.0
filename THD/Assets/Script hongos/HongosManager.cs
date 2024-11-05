@@ -36,8 +36,8 @@ public class HongoManager : MonoBehaviour
     {
         if (mushroomCount >= amount)
         {
-            mushroomCount -= amount;
-            UpdateMushroomCounter();
+            mushroomCount -= amount; // Disminuye la cantidad de hongos
+            UpdateMushroomCounter(); // Actualiza el texto
         }
         else
         {
