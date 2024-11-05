@@ -5,20 +5,29 @@ using TMPro;
 public class StoreManager : MonoBehaviour
 {
     public TextMeshProUGUI goldText; // Texto para mostrar la cantidad de oro
+    public TextMeshProUGUI upgradeCostText; // Texto para mostrar el costo de la mejora
+    public Button upgradeButton; // Botón de mejora
+
     private int gold = 0; // Cantidad de oro que tiene el jugador
+    private int upgradeCost = 100; // Costo inicial de la mejora
     private PotionCraftingManager potionCraftingManager;
 
     void Start()
     {
         potionCraftingManager = FindObjectOfType<PotionCraftingManager>();
         UpdateGoldText(); // Actualizar el texto de oro al inicio
-        UpdateStoreUI(); // Actualizar la tienda al inicio
+        UpdateUpgradeCostText(); // Actualizar el texto de costo de mejora al inicio
+
+        // Asigna el método Upgrade al evento OnClick del botón de mejora
+        if (upgradeButton != null)
+        {
+            upgradeButton.onClick.AddListener(Upgrade); 
+        }
     }
 
     public void UpdateStoreUI()
     {
         // Aquí puedes agregar lógica para mostrar cuántas pociones hay disponibles para vender
-        // Por ejemplo, podrías tener botones para vender cada tipo de poción
     }
 
     // Método para vender pociones de hongos
@@ -53,8 +62,31 @@ public class StoreManager : MonoBehaviour
         }
     }
 
+    // Método para la mejora
+    public void Upgrade()
+    {
+        if (gold >= upgradeCost)
+        {
+            gold -= upgradeCost; // Deduce el oro
+            upgradeCost += 50; // Incrementa el costo de la siguiente mejora (puedes ajustar este valor)
+
+            Debug.Log("¡Mejora comprada!");
+            UpdateGoldText();
+            UpdateUpgradeCostText();
+        }
+        else
+        {
+            Debug.Log("No tienes suficiente oro para mejorar.");
+        }
+    }
+
     private void UpdateGoldText()
     {
         goldText.text = "Oro: " + gold; // Actualiza el texto del oro en la UI
+    }
+
+    private void UpdateUpgradeCostText()
+    {
+        upgradeCostText.text = "Costo: " + upgradeCost; // Actualiza el texto del costo de mejora
     }
 }
